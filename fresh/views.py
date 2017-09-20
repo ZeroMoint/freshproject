@@ -3,8 +3,6 @@ from hashlib import sha1
 from .models import *
 from django.http import HttpResponseRedirect
 
-def index(request):
-	return render(request,'fresh/index.html')
 
 def register(request):
 	return render(request,'fresh/register.html')
@@ -68,3 +66,21 @@ def register_exist(request):
 
 def info(request):
 	return render(request,'fresh/user_center_info.html')
+
+def order(request):
+	return render(request,'fresh/user_center_order.html')
+
+def site(request):
+	user=UserInfo.objects.get(id=request.session['user_id'])
+	if request.method == 'POST':
+		post=request.POST
+		user.ushou=post.get('ushou')
+		user.uaddress=post.get('uaddress')
+		user.uyoubian=post.get('uyoubian')
+		user.uphone=post.get('uphone')
+		user.save()
+	context={'title':'用户中心','user':user}
+
+	return render(request,'fresh/user_center_site.html',context)
+	
+
